@@ -1,0 +1,164 @@
+= SoundBond (SB) Documentation
+2021-10-04
+
+== Synthèse
+=== L'équipe
+L'équipe est composée de Maguette Diop, Paul Malinvaud, Mohamed Belhaimeur, Guilhem Tissot ainsi que, depuis plus récemment, d'Hajar Salhi.
+
+=== Le projet
+Le projet SoundBond a été pensé en analogie avec un réseau social comme Instagram. Ce dernier est omniprésent aujourd'hui et il paraît tout à fait naturel d'immortaliser ses souvenirs avec une photo de son plat, à la plage ou avec ses amis. En regardant les réseaux sociaux déjà existants nous nous sommes dit que personne ne jouait exclusivement sur l'aspect du son. Il a l'avantage de pouvoir offrir un nouveau regard sur les souvenirs immortalisés et à l'avenir nous aimerions bien que l'application serve à transformer chaque utilisateur en DJ du quotidien.
+
+// problématique et gain attendu, motivation de l'équipe par rapport au sujet, concurrence / état de l'art de l'existant et placement par rapport à cela
+
+=== Les personas
+==== Utilisateur Instagram de longue date
+En tant qu'utilisateur d'Instagram, je m'attends à retrouver des fonctionnalités que je connais comme la messagerie, le fil d'actualités ou encore l'onglet Explorer. Je m'attends également à pouvoir modifier les sons que j'enregistre à la manière des filtres pour les photos Instagram. Il faut que ce soit retouché pour que ce soit beau.
+
+==== Musicien
+En tant que musicien, je m'attends à pouvoir partager mes compositions. Une communauté pourrait faire marcher le bouche à oreille et me permettre de gagner en notoriété. Je peux réaliser des vidéos avec Instagram mais préfère être jugé sur le son et seulement le son.
+
+==== Bruiteur 
+En tant que bruiteur, je m'attends à pouvoir partager mes créations. Celles-ci apparaissent d'habitude dans les films sans que personne ne sache que c'était moi qui est derrière ces sons, qui ont été enregistrés en studio. Je m'attends donc à pouvoir faire gagner en visibilité mon métier grâce à ce réseau en faisant par exemple des sortes de BlindTest mais pour des bruits connus du cinéma. 
+
+==== Nouvel arrivant sur les réseaux sociaux
+En tant que nouvel arrivant sur les réseaux sociaux, je m'attends à pouvoir partager du contenu avec mes amis ainsi que voir ce qu'ils publient. Je voudrais également pouvoir suivre des artistes du son. 
+
+=== Prévisions marketing
+Nous prévoyons de pousser notre projet auprès des utilisateurs par des promotions sur Internet. 
+Mocha
+== Aspect techniques
+=== Type d'application
+L'application sera d'abord une web-application jusqu'à que le backend soit entièrement fonctionnel. Nous imaginons ensuite la possibilité de réaliser une application mobile en React Native.
+
+=== Schéma architectural
+Le schéma architectural suit le modèle MERN. MERN pour MongoDB, "`Express`" <<express>>, "`ReactJS`" <<reactjs>>  et "`NodeJS`" <<nodejs>>.  Nous avons décidés de nous lancer dans une application de structure MERN car nous avions tous déjà une expérience sur une WebApp mais pas avec les mêmes langages, l'un avait utilisé ReactJS en front et Python en back, un autre Angular et Java, etc... Nous voulions découvrir une nouvelle architecture avec le projet et avons donc décidés de partir sur du MERN, architecture très populaire. Nous avons d'abord commencé avec cette architecture classique puis nous sommes passés de MongoDB à MySQL (et de l'ODM - Object Document Mapper - Mongoose à l'ORM - Object Relational Mapper - Sequelize) car n'appréciant pas l'aspect (et les contraintes) de MongoDB - celui-ci étant NoSQL. La base est stockée sur le même serveur que la WebApp mais pourra être externalisé.
+
+Dans notre cas, nous avons deux modèles de persistance de données, celle de nos classes comme les utilisateurs, les sons sociaux, etc... puis les sons en tant que ressource. Ces derniers seront, dans l'idéal, stockés sur un BLOB, avec l'URL de chaque fichier conservé dans notre base de données. Dans un premier temps, ils seront conservés sur le serveur de la WebApp.
+
+
+=== Plateforme technologique
+Avec ReactJS en _frontend_ et NodeJS en _backend_, nous utilisons presque uniquement JavaScript. Pour les frameworks de tests nous allons utiliser "`Mocha`" <<mocha>> et "`Chai`" <<chai>> pour la lib d'assertions. Nous avons choisi ces frameworks car ils nous semblaient qu'ils étaient les plus utilisés dans l'architecture que nous avions choisie. 
+
+=== Plateforme opérationnelle
+Nous utilisons un board Jira pour nous coordonner. Nous utilisions précédemment GitHub Project pour le kanban client et Jira pour celui de l'équipe de développement, puis nous avons échangé les plateformes afin de pouvoir générer des _burn-down ou burn-up charts_ pour le client, et de pouvoir référencer nos commits avec nos _issues_ plus facilement. Pour communiquer autour du projet nous utilisons Slack, qui a l'avantage de pouvoir être relié à toutes les autres applications que nous utilisons pour le projet (Jira, Travis, etc...).
+Notre projet se trouve sur GitHub et nous faisons de l'analyse de qualité de code avec SonarCloud. L'intégration continue se faisait dans un premier temps avec Travis CI car nous avions de l'expérience dessus mais après épuisement de crédits nous sommes passer à GitHub Actions.
+
+=== Interconnection avec systèmes et API distantes
+
+Pour les cartes, nous utilisons l'API gratuite de "`MapBox`" <<mapbox>>.
+
+=== Acquisition de données et usage intelligent
+
+Partage de données avec BirdNet ?
+
+== Modélisation - v1.0
+
+=== Maquette du front 
+
+==== v0.2 Fil d'actualité 
+
+image::assets/Feed.png[]
+La page d'accueil est accessible en cliquant sue le nom de la plateforme "SoundBond" situé dans la navbar en haut à gauche et contient les posts de l'utilisateur ainsi que les posts de personnes qu'il suit.
+
+Scénarios 
+
+1. L'utilisateur est connecté et souhaite faire défiler le contenu de son fil d'actualité
+2. L'utilisateur trouvera sur cette page les posts qu'il a créé lui même ou ceux créé par les personnes qu'il suit, il pourra liker ou commenter ces posts
+3. Cliquer sur l'icone Map redirigera l'utilisateur vers la carte dans laquelle les sons sont positionnés sur un fond de carte MapBox.   
+3'. Cliquer sur l'icone Profil redirigera l'utilisateur vers la page de son profil dans laquelle il peut voir la liste des ses abonnés, de ses abonnements ainsi que tous ses posts.
+4. L'utilisateur pourra se déconnecter en cliquant sur "Se déconnecter" en haut à gauche.
+
+
+==== v0.3 Carte des sons
+image::assets/Map.png[]
+
+Cette page regroupe les sons enregistés positionner sur une carte et permet à l'utilisateur de chercher un son selon sa position
+
+==== v0.4 Commenter un post 
+image::assets/Comment.png[]
+
+L’utilisateur souhaite laisser un commentaire sur un post
+
+Scénarios : 
+
+L’utilisateur est connecté et a choisi un post de son fil ou sur son profil 
+
+L’utilisateur clique sur l’icône :speech_balloon:  et une section de commentaire est affichée lui permettant d’ajouter son commentaire ou lire les commentaires des autres  
+
+==== v0.4 Suivre d'autres utilisateurs
+image::assets/Un-Follow.png[]
+L’utilisateur connecté souhaite s’abonner à un ou plusieurs autres utilisateurs.
+
+Pour cela il ouvrira la page utilisateurs dans laquelle on affichera tous les utilisateurs de la plateforme avec des boutons follow/unfollow à gauche de chaque profil 
+
+==== v0.5 Partager un post sur un autre réseau social
+
+==== v0.5 Profil 
+
+image::assets/Profil.png[]
+la page Profil est ouverte aprés le login de l'utilisateur et lui permet de créer des nouveaux posts et les partager ainsi que revoir ses anciens posts 
+
+Scénarios 
+
+1. L'utilisateur pourra créer un post en ajoutant un son et une description et le partager avec les personnes qui le suivent en cliquant sur le bouton share
+2. La page est mis à jour à chaque création d'un nouveau post
+3. L'utilisateur dispose toujours d'une navbar qui facilite la navigation sur le site
+
+==== v0.6 Lecture des sons 
+
+image::assets/play_son.png[]
+L'utilisateur souhaite lire ses sons ou ceux de ses amis à tout moment et cela en cliquant sur le bouton play [1 dans la maquette] de chaque post.
+
+==== v0.6 Trim son 
+
+image::assets/son_before_trim.png[]
+image::assets/son_after_trim.png[]
+Après création d’un post l’utilisateur a la possibilité de couper un son et lire / télécharger le morceau coupé.
+
+==== v0.6 Chercher un son par son tag 
+image::assets/search_tag.png[]
+Je peux rentrer un tag qui m’intéresse dans une barre de recherche et obtenir tous les posts qui ont ce tag.
+
+==== v0.6 Partager un post sur son profil
+image::assets/before_share.png[]
+image::assets/after_share.png[]
+Un utilisateur souhaite partager un post d’un autre utilisateur sur son profil
+
+Scénarios : 
+
+l’utilisateur est connecté et est sur son fil d’actualité 
+
+l’utilisateur choisi un post et clique sur le boutton partagé 
+
+Une pop-up s'affichera avec un message indiquant que le partage est fait et invitant l'utilisateur  à voir le post sur son profil.
+
+==== v1.0 Créer une playlist
+image::assets/Playlist-création.png[]
+image::assets/Playlist-map.png[]
+
+==== v1.0 N'afficher que les sons avec un tag choisi
+image::assets/FiltreMapTags-before.png[]
+image::assets/FiltreMapTags-after.png[]
+
+==== v1.0 Recherche avancée
+
+
+=== Diagramme de classes global
+
+image::assets/SoundBond.png[]
+
+=== Description API back (ex REST)
+
+=== Diagramme de séquences des intercations front/back
+
+// (par feature, voir le back comme une boîte noire)
+
+[bibliography]
+== Références
+
+* [[[mocha]]] https://mochajs.org/[Mocha], " a feature-rich JavaScript test framework running on Node.js and in the browser, making asynchronous testing simple and fun. "
+* [[[chai]]] https://www.chaijs.com/[Chai], " a BDD / TDD assertion library for node and the browser that can be delightfully paired with any javascript testing framework. "
+* [[[expres]]] https://expressjs.com/[Express], " a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications. "
+* [[[reactjs]]] https://fr.reactjs.org/[ReactJS], " une bibliothèque JavaScript pour la construction d’interfaces utilisateur (UI). "
+* [[[nodejs]]] https://nodejs.dev/[Node.js], " a free, open-sourced, cross-platform JavaScript run-time environment that lets developers write command line tools and server-side scripts outside of a browser. "
+* [[[mapbox]]] https://fr.wikipedia.org/wiki/Mapbox[MapBox], " une entreprise américaine spécialisée dans la cartographie en ligne. Elle fournit les cartes de sites, services et médias tels que Foursquare, Pinterest, The Financial Times, Etsy, Le Monde et Snapchat. Mapbox développe un ensemble de technologies et d’outils cartographiques, dont la bibliothèque Mapbox.js "
